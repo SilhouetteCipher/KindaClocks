@@ -12,4 +12,3 @@ function calculateTimeAngle() {
   }
   return angle;
 }
-export { calculateTimeAngle };
