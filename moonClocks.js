@@ -37,8 +37,8 @@ function buildHourHand() {
   handAngle = radians(handAngle); // Correct conversion to radians
   let centerX = 0;
   let centerY = 0;
-  let targetX = centerX + distance * cos(handAngle); // Calculate the x coordinate
-  let targetY = centerY + distance * sin(handAngle); // Calculate the y coordinate
+  let targetX = centerX + 0.8 * distance * cos(handAngle); // Calculate the x coordinate
+  let targetY = centerY + 0.8 * distance * sin(handAngle); // Calculate the y coordinate
   push();
   translate(targetX, targetY, 20); // Translate to the calculated position
   fill(255);
@@ -52,8 +52,8 @@ function buildMinHand() {
   handAngle = radians(handAngle); // Correct conversion to radians
   let centerX = 0;
   let centerY = 0;
-  let targetX = centerX + (distance / 1.5) * cos(handAngle); // Calculate the x coordinate
-  let targetY = centerY + (distance / 1.5) * sin(handAngle); // Calculate the y coordinate
+  let targetX = centerX + 0.8 * (distance / 1.5) * cos(handAngle); // Calculate the x coordinate
+  let targetY = centerY + 0.8 * (distance / 1.5) * sin(handAngle); // Calculate the y coordinate
   push();
   translate(targetX, targetY, 20); // Translate to the calculated position
   fill(255);
