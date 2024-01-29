@@ -4,6 +4,7 @@ let points = [];
 let handAngle = 0;
 let minAngle = 0;
 let numOfPoints = 120;
+let lineWidth = 2;
 
 function setup() {
   createCanvas(width, height);
@@ -37,6 +38,7 @@ function drawGrass() {
   let centerY = height / 2;
   let points = [];
   stroke(255, 60);
+  strokeWeight(lineWidth);
   for (let i = 0; i < numOfPoints; i++) {
     let angle = radians(i * (360 / numOfPoints)); // Calculate the angle between each point
     let x = centerX + radius * cos(angle);
