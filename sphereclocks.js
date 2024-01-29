@@ -7,11 +7,6 @@ let minSize = height / 120;
 let faceSize = height / 12;
 let distance = height / 4;
 
-// let distance = 400;
-// let hourSize = 50;
-// let minSize = 10;
-// let faceSize = 100;
-
 function setup() {
   createCanvas(width, height, WEBGL);
   currentHour = hour();
