@@ -3,13 +3,19 @@ let width = visualViewport.width;
 let height = visualViewport.height;
 let currentHour;
 let handColor = 255;
+let centerGradient;
+let circleDiameter;
 function setup() {
   createCanvas(width, height);
   currentHour = hour();
   background(0);
+
+  centerGradient = createRadialGradient(0, 600);
+  centerGradient.colors(0.1, color(0), 0.5, color(0, 0));
 }
 
 function draw() {
+  push();
   background(0);
 
   noStroke();
@@ -19,6 +25,17 @@ function draw() {
   drawHourHand();
   drawMinHand();
   filter(BLUR, 50);
+  pop();
+  noStroke();
+  fillGradient(centerGradient);
+
+  // you must always translate to apply the gradient properly
+  // maybe I can figure out a way to fix this??? Or maybe I can't!
+  push();
+  translate(width / 2, height / 2);
+
+  circle(0, 0, 600, 600);
+  pop();
 }
 
 //draw the hour hand
