@@ -58,3 +58,12 @@ function calculateSecondHandAngle() {
   }
   return angle;
 }
+
+function buildClockFace() {
+  if (width > height) {
+    circleDiameter = height - 200;
+  } else {
+    circleDiameter = width - 200;
+  }
+  circle(width / 2, height / 2, circleDiameter);
+}
