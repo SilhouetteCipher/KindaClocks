@@ -2,27 +2,31 @@ let xGrad = 0;
 let yGrad = 0;
 let angleGrad = 0;
 let rotateRate = 0.01;
-let width = visualViewport.width;
-let height = visualViewport.height;
+let width;
+let height;
+
 let handAngle;
 
 function setup() {
+  width = windowWidth;
+  height = windowHeight;
   createCanvas(width, height);
   noStroke();
   xGrad = width / 2;
   yGrad = height / 2;
+  windowResized();
 }
 
 function draw() {
-  push();
   let angle = calculateTimeAngle();
   //angleGrad += rotateRate;
   fillGradient("conic", {
     from: [xGrad, yGrad, angle], // x, y, angle(degrees)
     steps: [color("black"), color("#3b3b3b")], // p5.color objects
   });
+
   rect(0, 0, width, height);
-  pop();
+
   //drawHourMarkers();
 }
 
@@ -50,4 +54,8 @@ function drawHourMarkers() {
     fill(255, 10);
     circle(x, y, 10);
   }
+}
+
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
 }
