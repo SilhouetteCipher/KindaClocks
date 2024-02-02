@@ -1,6 +1,6 @@
 let timeAngle;
-let width = visualViewport.width;
-let height = visualViewport.height;
+let width = windowWidth;
+let height = windowHeight;
 let currentHour;
 let hourSize = height / 35;
 let minSize = height / 120;
