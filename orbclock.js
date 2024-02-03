@@ -8,7 +8,7 @@ function setup() {
   height = windowHeight;
   createCanvas(width, height);
   let fullscreenButton = select("#fullscreenButton");
-  fullscreenButton.mousePressed(goFullscreen);
+  fullscreenButton.mousePressed(toggleFullScreen);
 }
 
 function draw() {

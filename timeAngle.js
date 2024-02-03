@@ -74,3 +74,13 @@ function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
   // Redraw your elements here based on the new window size
 }
+
+function toggleFullScreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen();
+  } else {
+    if (document.exitFullscreen) {
+      document.exitFullscreen();
+    }
+  }
+}
