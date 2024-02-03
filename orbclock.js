@@ -1,9 +1,11 @@
 let timeAngle;
-let width = visualViewport.width;
-let height = visualViewport.height;
+let width;
+let height;
 let lines = [];
 let angle = 0;
 function setup() {
+  width = windowWidth;
+  height = windowHeight;
   createCanvas(width, height);
 }
 
