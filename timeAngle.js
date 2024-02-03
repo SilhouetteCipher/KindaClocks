@@ -58,3 +58,19 @@ function calculateSecondHandAngle() {
   }
   return angle;
 }
+
+function goFullscreen() {
+  let fs = fullscreen();
+  fullscreen(!fs);
+  windowResized();
+}
+function windowResized() {
+  width = windowWidth;
+  height = windowHeight;
+  hourSize = height / 35;
+  minSize = height / 120;
+  faceSize = height / 12;
+  distance = height / 4;
+  resizeCanvas(windowWidth, windowHeight);
+  // Redraw your elements here based on the new window size
+}
