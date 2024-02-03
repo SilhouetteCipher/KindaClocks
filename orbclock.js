@@ -1,6 +1,6 @@
 let timeAngle;
-let width;
-let height;
+let width = 1000;
+let height = 1000;
 let lines = [];
 let angle = 0;
 function setup() {
