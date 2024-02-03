@@ -1,6 +1,6 @@
 let timeAngle;
-let width = windowWidth;
-let height = windowHeight;
+let width;
+let height;
 let currentHour;
 let hourSize = height / 35;
 let minSize = height / 120;
@@ -8,6 +8,8 @@ let faceSize = height / 12;
 let distance = height / 4;
 
 function setup() {
+  width = windowWidth;
+  height = windowHeight;
   createCanvas(width, height, WEBGL);
   currentHour = hour();
   ortho(-width / 2, width / 2, -height / 2, height / 2, 0.1, 5000); // Set an orthographic projection

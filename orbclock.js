@@ -9,7 +9,7 @@ function setup() {
 
 function draw() {
   timeAngle = calculateTimeAngle();
-  background(255);
+  background(0);
   buildLinesForCircle();
   angle = calculateTimeAngle();
   timeCirclehand();
@@ -37,7 +37,8 @@ function buildLinesForCircle() {
       let targetY = centerY + distance * sin(calculateTimeAngle); // Calculate the y coordinate
       let angle = atan2(targetY - y, targetX - x); // Calculate the angle from the current point to the target point
       rotate(angle); // Rotate the coordinate system by the calculated angle
-      strokeWeight(2);
+      strokeWeight(1);
+      stroke(255, 60);
       line(0, 0, 20, 0); // Draw the line
       line(0, 0, -20, 0); // Draw the line
       pop(); // Restore the transformation matrix
@@ -54,7 +55,7 @@ function timeCirclehand() {
 
   let circleX = centerX + distance * cos(timeAngle); // X coordinate of the circle's center
   let circleY = centerY + distance * sin(timeAngle); // Y coordinate of the circle's center
-  fill(0);
+  fill(255, 50);
   ellipse(circleX, circleY, 5, 5); // Draw the circle
 }
 function calculateTimeAngle() {
