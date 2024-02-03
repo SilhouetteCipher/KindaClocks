@@ -21,7 +21,7 @@ canvas {
   font-size: 16px;
   margin-left: 50%;
   bottom: 10px;
-  right: 10px;
+  left: 10px;
 
   cursor: pointer;
 }
