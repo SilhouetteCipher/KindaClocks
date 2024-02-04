@@ -1,5 +1,5 @@
-let width = visualViewport.width;
-let height = visualViewport.height;
+let width;
+let height;
 let points = [];
 let handAngle = 0;
 let minAngle = 0;
@@ -7,6 +7,8 @@ let numOfPoints = 120;
 let lineWidth = 2;
 
 function setup() {
+  width = visualViewport.width;
+  height = visualViewport.height;
   createCanvas(width, height);
   //buildPointsOnCircle();
 }
