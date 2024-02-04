@@ -29,6 +29,7 @@ function draw() {
   buildClockFace(6);
   buildHourHand();
   buildMinHand();
+  window.addEventListener("resize", onWindowResize, false);
 }
 
 function buildClockFace(size) {
@@ -93,4 +94,15 @@ function calculateMinuteHandAngle() {
     angle += 360;
   }
   return angle;
+}
+
+function onWindowResize() {
+  width = windowWidth;
+  height = windowHeight;
+  hourSize = height / 35;
+  minSize = height / 120;
+  faceSize = height / 12;
+  distance = height / 4;
+  resizeCanvas(width, height);
+  ortho(-width / 2, width / 2, -height / 2, height / 2, 0.1, 5000); // Set an orthographic projection
 }
