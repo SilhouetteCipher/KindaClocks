@@ -1,6 +1,7 @@
 let timeAngle;
 let width;
 let height;
+let rectSize = 200;
 function setup() {
   width = windowWidth;
   height = windowHeight;
@@ -10,9 +11,9 @@ function setup() {
 
 function draw() {
   timeAngle = calculateTimeAngle();
-  clockPosition = hour() * 30;
+  clockPosition = getTimeXPosition(rectSize) - rectSize / 1.3;
   background(220);
-  circleTime(800, 800, clockPosition);
+  circleTime(rectSize, rectSize, clockPosition);
 }
 
 function circleTime(rectWidth, rectHeight, clockPosition) {
@@ -30,6 +31,8 @@ function circleTime(rectWidth, rectHeight, clockPosition) {
   pop();
 }
 
-function linearTime() {
-  let x = hour() * 30;
+function getTimeXPosition(rectWidth) {
+  let secondsSinceMidnight = hour() * 3600 + minute() * 60 + second();
+  let totalSecondsInDay = 24 * 60 * 60;
+  return map(secondsSinceMidnight, 0, totalSecondsInDay, 0, rectWidth);
 }
