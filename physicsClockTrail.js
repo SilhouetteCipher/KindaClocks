@@ -82,7 +82,6 @@ function backgroundTimeText() {
 
 class Particle {
   constructor() {
-    lerpFactor = 0;
     this.originalColor =
       colorArray[Math.floor(Math.random() * colorArray.length)];
     this.color = this.originalColor;
