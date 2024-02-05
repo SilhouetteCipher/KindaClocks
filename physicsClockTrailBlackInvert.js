@@ -1,4 +1,5 @@
-let timeAngle;
+const transitionDuration = 1000; // Transition duration in milliseconds
+
 let width;
 let height;
 let hourText;
@@ -16,17 +17,16 @@ let colorArray = [
   "#d5d5d5",
 ];
 let lastSwapTime = 0;
-let swapInterval = 180 * 1000; // 60 seconds
+let swapInterval = 180 * 1000; // 3 minutes
 let whiteDuration = 2 * 1000; // 2 seconds
 let particleSmallSize = 10;
 let particleBigSize = 40;
-let transitionDuration = 1000;
+
 function setup() {
   width = windowWidth;
   height = windowHeight;
   particleBigSize = width / 42;
   particleSmallSize = width / 160;
-
   clockTextSize = width / 4;
   createCanvas(width, height);
   textGraphics = createGraphics(width, height);
@@ -39,12 +39,10 @@ function draw() {
   hourText = hour();
   minuteText = nf(minute(), 2);
   backgroundTimeText();
-  //image(textGraphics, 0, 0);
   background(0, 0.1);
   for (let i = 0; i < particles.length; i++) {
     particles[i].update();
     particles[i].display();
-    particles[i].checkBlackArea();
   }
 }
 
@@ -60,8 +58,6 @@ function windowResized() {
 
 function backgroundTimeText() {
   let currentTime = millis();
-
-  // Check if it's time to make the text white
   if (currentTime - lastSwapTime > swapInterval) {
     textGraphics.fill(255);
     if (currentTime - lastSwapTime > swapInterval + whiteDuration) {
@@ -76,7 +72,6 @@ function backgroundTimeText() {
   textGraphics.textSize(clockTextSize);
   textGraphics.textAlign(CENTER, CENTER);
   textGraphics.textStyle(BOLD);
-
   textGraphics.textFont("futura");
   textGraphics.text(hourText + " : " + minuteText, width / 2, height / 2);
 }
@@ -85,60 +80,62 @@ class Particle {
   constructor() {
     this.originalColor =
       colorArray[Math.floor(Math.random() * colorArray.length)];
-    this.color = this.originalColor;
-    this.targetColor = this.originalColor;
+    this.color = color(this.originalColor); // Ensure this is a p5.Color
     this.position = createVector(random(width), random(height));
     this.velocity = createVector(random(-1, 1), random(-1, 1));
     this.stopped = false;
     this.stopDelay = 0;
     this.particleSize = random(particleSmallSize, particleBigSize);
+    this.lerpFactor = 0;
+    this.inTransition = false;
+    this.transitionStartTime = -1;
   }
 
   update() {
     if (!this.stopped) {
       this.position.add(this.velocity);
       this.checkEdges();
-      this.checkBlackArea();
       if (this.stopDelay > 0) {
         this.stopDelay--;
       } else if (this.stopDelay === 0 && this.isInBlackArea()) {
         this.velocity = createVector(0, 0);
         this.stopped = true;
       }
+
+      if (this.isInBlackArea() && !this.inTransition) {
+        this.inTransition = true;
+        this.transitionStartTime = millis();
+      }
+
+      if (this.inTransition) {
+        let elapsedTime = millis() - this.transitionStartTime;
+        if (elapsedTime < transitionDuration) {
+          this.lerpFactor = map(elapsedTime, 0, transitionDuration, 0, 1);
+        } else {
+          this.lerpFactor = 1;
+          this.inTransition = false;
+        }
+      }
     } else {
       this.checkWhiteArea();
     }
   }
+
   display() {
-    let pixel = textGraphics.get(this.position.x, this.position.y);
-    let isInBlackArea =
-      red(pixel) === 0 && green(pixel) === 0 && blue(pixel) === 0;
-
-    // Convert originalColor from string to p5.Color
-    let originalColor = color(this.originalColor);
-
-    // Calculate dim color
     let dimColor = color(
-      red(originalColor) / 4,
-      green(originalColor) / 4,
-      blue(originalColor) / 4
+      red(this.color) / 4,
+      green(this.color) / 4,
+      blue(this.color) / 4
     );
-
-    // Set lerp factor based on whether the particle is in a black area
-    let lerpFactor = isInBlackArea ? 1 : 0;
-
-    // Use lerpColor to smoothly transition between dimColor and originalColor
-    this.color = lerpColor(dimColor, originalColor, lerpFactor);
+    this.color = lerpColor(
+      dimColor,
+      color(this.originalColor),
+      this.lerpFactor
+    );
 
     fill(this.color);
     noStroke();
     circle(this.position.x, this.position.y, this.particleSize);
-  }
-
-  checkBlackArea() {
-    if (this.isInBlackArea()) {
-      this.stopDelay = floor(random(0, 80)); // delay between 1 to 3 seconds at 60 fps
-    }
   }
 
   isInBlackArea() {
@@ -151,6 +148,8 @@ class Particle {
     if (red(pixel) > 0 || green(pixel) > 0 || blue(pixel) > 0) {
       this.velocity = createVector(random(-1, 1), random(-1, 1));
       this.stopped = false;
+      this.inTransition = false;
+      this.lerpFactor = 0;
     }
   }
 
