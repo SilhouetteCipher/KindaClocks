@@ -6,10 +6,26 @@ let minuteText;
 let clockTextSize;
 let particles = [];
 let textGraphics;
-
+let colorArray = [
+  "#d4b89d",
+  "#3c342d",
+  "#ca4343",
+  "#2455a5",
+  "#2c5b4b",
+  "#ffb82c",
+  "#d5d5d5",
+];
+let lastSwapTime = 0;
+let swapInterval = 180 * 1000; // 60 seconds
+let whiteDuration = 2 * 1000; // 2 seconds
+let particleSmallSize = 10;
+let particleBigSize = 40;
 function setup() {
   width = windowWidth;
   height = windowHeight;
+  particleBigSize = width / 42;
+  particleSmallSize = width / 160;
+
   clockTextSize = width / 4;
   createCanvas(width, height);
   textGraphics = createGraphics(width, height);
@@ -23,8 +39,8 @@ function draw() {
   hourText = hour();
   minuteText = nf(minute(), 2);
   backgroundTimeText();
-  image(textGraphics, 0, 0);
-  background(255);
+  //image(textGraphics, 0, 0);
+  background(0);
   for (let i = 0; i < particles.length; i++) {
     particles[i].update();
     particles[i].display();
@@ -36,28 +52,43 @@ function windowResized() {
   width = windowWidth;
   height = windowHeight;
   clockTextSize = width / 4;
+  particleBigSize = width / 42;
+  particleSmallSize = width / 160;
   resizeCanvas(windowWidth, windowHeight);
   textGraphics.resizeCanvas(windowWidth, windowHeight);
 }
 
 function backgroundTimeText() {
+  let currentTime = millis();
+
+  // Check if it's time to make the text white
+  if (currentTime - lastSwapTime > swapInterval) {
+    textGraphics.fill(255);
+    if (currentTime - lastSwapTime > swapInterval + whiteDuration) {
+      textGraphics.fill(0);
+      lastSwapTime = currentTime;
+    }
+  } else {
+    textGraphics.fill(0);
+  }
+
   textGraphics.background(255);
   textGraphics.textSize(clockTextSize);
   textGraphics.textAlign(CENTER, CENTER);
   textGraphics.textStyle(BOLD);
 
   textGraphics.textFont("futura");
-  textGraphics.fill(0);
   textGraphics.text(hourText + " : " + minuteText, width / 2, height / 2);
 }
 
 class Particle {
   constructor() {
+    this.color = colorArray[Math.floor(Math.random() * colorArray.length)];
     this.position = createVector(random(width), random(height));
     this.velocity = createVector(random(-1, 1), random(-1, 1));
     this.stopped = false;
     this.stopDelay = 0;
-    this.particleSize = random(10, 20);
+    this.particleSize = random(particleSmallSize, particleBigSize);
   }
 
   update() {
@@ -77,6 +108,8 @@ class Particle {
   }
 
   display() {
+    fill(this.color);
+    noStroke();
     circle(this.position.x, this.position.y, this.particleSize);
   }
 
@@ -111,4 +144,8 @@ class Particle {
       this.position.y = height - 1;
     }
   }
+}
+
+function resetCanvas() {
+  textGraphics.clear();
 }
