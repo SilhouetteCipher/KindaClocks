@@ -6,7 +6,7 @@ let gradientMin;
 let gradientSec;
 let border = 50;
 let gap = border / 4;
-let bottomBuffer = 1.4;
+let bottomBuffer = 1.2;
 let BarUnit;
 let gradientColors;
 function setup() {
@@ -49,6 +49,7 @@ function draw() {
   buildBarHour();
   buildBarMin();
   buildBarSec();
+  //barsForMonthsAndDays();
 }
 
 function windowResized() {
@@ -92,3 +93,20 @@ function buildBarSec() {
     height / bottomBuffer
   );
 }
+
+// function barsForMonthsAndDays() {
+//   let monthNumber = month();
+//   let dayNumber = day();
+//   for (let i = 0; i < 6; i++) {
+//     push();
+//     fill(0);
+//     rect(50 + (width / 12) * i, height - 100, width / 24, 50);
+//     pop();
+//   }
+//   for (let i = 0; i < dayNumber; i++) {
+//     push();
+//     fill(0);
+//     rect(50 + (width / 15) * i, height - 200, width / 31, 50);
+//     pop();
+//   }
+// }
