@@ -5,26 +5,47 @@ let gradientHour;
 let gradientMin;
 let gradientSec;
 let border = 50;
+let gap = border / 4;
 let bottomBuffer = 1.2;
 let BarUnit;
+let gradientColors;
 function setup() {
   background(220);
   width = windowWidth;
   height = windowHeight;
 
   createCanvas(width, height);
-  gradientHour = createConicGradient(0, (width - 2 * border) / 3, height / 2);
-  gradientMin = createConicGradient(0, 2 * BarUnit - 4 * border, height / 2);
-  gradientSec = createConicGradient(0, 3 * BarUnit - 4 * border, height / 2);
   windowResized();
 }
 
 function draw() {
   background(220);
-  let timeSec = second() / 60;
+  gradientColors = [0, "black", 0.5, "white", 1, "black"];
+  let secondAngle = radians(calculateSecondHandAngle()) + PI;
+  let minuteAngle = radians(calculateMinuteHandAngle()) + PI;
+  let hourAngle = radians(calculateHourHandAngle()) + PI;
+
+  let barWidth = (width - 2 * border) / 3;
+
+  gradientHour = createConicGradient(
+    hourAngle,
+    border + barWidth / 2,
+    height / 2
+  );
+  gradientMin = createConicGradient(
+    minuteAngle,
+    border + barWidth + barWidth / 2,
+    height / 2
+  );
+  gradientSec = createConicGradient(
+    secondAngle,
+    border + 2 * barWidth + barWidth / 2,
+    height / 2
+  );
+
   buildBarHour();
   buildBarMin();
-  buildBarSec(timeSec);
+  buildBarSec();
 }
 
 function windowResized() {
@@ -33,31 +54,36 @@ function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
 }
 
-function buildBarHour(timeHour) {
-  gradientHour.colors(0.3, "black", 0.5, "grey");
+function buildBarHour() {
+  gradientHour.colors(gradientColors);
   fillGradient(gradientHour);
   noStroke();
-  rect(border, border, (width - 2 * border) / 3, height / bottomBuffer);
-}
-
-function buildBarMin(timeMin) {
-  gradientMin.colors(0.3, "black", 0.5, "grey");
-  fillGradient(gradientMin);
-  noStroke();
   rect(
-    border + (width - 2 * border) / 3,
     border,
-    (width - 2 * border) / 3,
+    border,
+    (width - 2 * border) / 3 - gap / 2,
     height / bottomBuffer
   );
 }
 
-function buildBarSec(timeSec) {
-  gradientSec.colors(0.3, "black", 0.5, "grey");
+function buildBarMin() {
+  gradientMin.colors(gradientColors);
+  fillGradient(gradientMin);
+  noStroke();
+  rect(
+    border + (width - 2 * border) / 3 + gap / 2,
+    border,
+    (width - 2 * border) / 3 - gap,
+    height / bottomBuffer
+  );
+}
+
+function buildBarSec() {
+  gradientSec.colors(gradientColors);
   fillGradient(gradientSec);
   noStroke();
   rect(
-    border + (2 * (width - 2 * border)) / 3,
+    border + (2 * (width - 2 * border)) / 3 + gap / 2,
     border,
     (width - 2 * border) / 3,
     height / bottomBuffer
