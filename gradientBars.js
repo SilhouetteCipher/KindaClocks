@@ -6,7 +6,7 @@ let gradientMin;
 let gradientSec;
 let border = 50;
 let gap = border / 4;
-let bottomBuffer = 1.2;
+let bottomBuffer = 1.4;
 let BarUnit;
 let gradientColors;
 function setup() {
@@ -27,20 +27,23 @@ function draw() {
 
   let barWidth = (width - 2 * border) / 3;
 
+  let barHeight = (height + border) / bottomBuffer;
+  let gradientCenterY = border + barHeight / 2;
+
   gradientHour = createConicGradient(
     hourAngle,
     border + barWidth / 2,
-    height / 2
+    gradientCenterY
   );
   gradientMin = createConicGradient(
     minuteAngle,
     border + barWidth + barWidth / 2,
-    height / 2
+    gradientCenterY
   );
   gradientSec = createConicGradient(
     secondAngle,
     border + 2 * barWidth + barWidth / 2,
-    height / 2
+    gradientCenterY
   );
 
   buildBarHour();
