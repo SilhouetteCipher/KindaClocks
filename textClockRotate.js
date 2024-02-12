@@ -14,39 +14,36 @@ let trailInterval = 60000 * 1; // Store the time every 5 minutes
 function draw() {
   timeAngle = calculateTimeAngleHourOnly() - 90;
   background(220);
-  let timeString = buildTimeString(); // Call the function to get the time string
-  let textSizeValue = width / 5; // Estimate the full height of the text
-  push();
-  textSize(textSizeValue);
-  translate(width / 2, height / 2); // Adjust the y-coordinate
-  rotate(radians(timeAngle));
-  text(timeString, 0, 0); // Draw the text at the new origin
-  pop();
-  circle(width / 2, height / 2, 4);
+  let timeString = buildTimeString();
+  let textSizeValue = width / 5;
 
-  // Draw the trail
-  for (let i = 0; i < trail.length; i++) {
-    push();
-    textSize(textSizeValue);
-    translate(width / 2, height / 2); // Adjust the y-coordinate
-    rotate(radians(trail[i].angle - 90)); // Subtract 90 degrees to start from the 12 o'clock position
-    fill(220, (0.5 * (trail.length - i)) / trail.length); // Decrease the opacity for older times
-    text(trail[i].time, 0, 0); // Draw the time at the stored position
-    pop();
+  // Update the trail
+  let currentTime = millis();
+  if (currentTime - lastTrailTime > trailInterval) {
+    trail.push({ time: timeString, angle: timeAngle });
+    lastTrailTime = currentTime;
   }
 
-  // Draw the trail
+  // Draw the current time
+  push();
+  textSize(textSizeValue);
+  translate(width / 2, height / 2);
+  rotate(radians(timeAngle));
+  text(timeString, 0, 0);
+  pop();
+
   for (let i = 0; i < trail.length; i++) {
+    // Mapping such that older entries are more transparent
+    let fade = map(i, 0, trail.length - 1, 50, 255); // Fading from 50 (semi-transparent) to 255 (opaque)
     push();
     textSize(textSizeValue);
-    translate(width / 2, height / 2 + estimatedTextHeight / 2); // Adjust the y-coordinate
+    translate(width / 2, height / 2);
     rotate(radians(trail[i].angle));
-    fill(220, (0.5 * (trail.length - i)) / trail.length); // Decrease the opacity for older times
-    text(trail[i].time, 0, 0); // Draw the time at the stored position
+    fill(0, fade); // Apply the fading effect with black color
+    text(trail[i].time, 0, 0);
     pop();
   }
 }
-
 function windowResized() {
   width = windowWidth;
   height = windowHeight;
