@@ -1,7 +1,9 @@
 let timeAngle;
 let width;
 let height;
+let chosenFont;
 function setup() {
+  chosenFont = loadFont("/fonts/1.ttf");
   width = windowWidth;
   height = windowHeight;
   createCanvas(width, height);
@@ -9,24 +11,30 @@ function setup() {
 
 let trail = [];
 let lastTrailTime = 0;
-let trailInterval = 60000 * 1; // Store the time every 5 minutes
+let trailInterval = 60000 * 1; // Store the time every 1 minutes
 
 function draw() {
   timeAngle = calculateTimeAngleHourOnly() - 90;
-  background(220);
+  background(255);
+  circle(width / 2, height / 2, width / 1.2);
   let timeString = buildTimeString();
-  let textSizeValue = width / 5;
+  let textSizeValue = width / 6;
 
-  // Update the trail
   let currentTime = millis();
   if (currentTime - lastTrailTime > trailInterval) {
     trail.push({ time: timeString, angle: timeAngle });
     lastTrailTime = currentTime;
+
+    // If trail length exceeds 20, remove the oldest entry
+    if (trail.length > 20) {
+      trail.shift();
+    }
   }
 
   // Draw the current time
   push();
   textSize(textSizeValue);
+  textFont(chosenFont);
   translate(width / 2, height / 2);
   rotate(radians(timeAngle));
   text(timeString, 0, 0);
@@ -34,6 +42,7 @@ function draw() {
 
   for (let i = 0; i < trail.length; i++) {
     // Mapping such that older entries are more transparent
+    // Adjust the fade range based on the length of the trail
     let fade = map(i, 0, trail.length - 1, 50, 255); // Fading from 50 (semi-transparent) to 255 (opaque)
     push();
     textSize(textSizeValue);
