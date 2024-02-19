@@ -61,6 +61,7 @@ function windowResized() {
 }
 
 function buildTimeString() {
+  textFont(chosenFont);
   let date = new Date();
   let hours = date.getHours();
   let minutes = date.getMinutes().toString().padStart(2, "0");
